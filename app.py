@@ -1,5 +1,6 @@
 from flask import Flask
 from models import db, User, Role
+from flask_login import LoginManager
 
 
 def create_app():
@@ -7,8 +8,17 @@ def create_app():
 
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///trek_app.db"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config["SECRET_KEY"] = "very_secret_key"
 
     db.init_app(app)
+
+    login_manager = LoginManager()
+    login_manager.init_app(app)
+    login_manager.login_view = "login"
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(int(user_id))
 
     with app.app_context():
         db.create_all()
@@ -23,6 +33,11 @@ def create_app():
             )
             db.session.add(admin)
             db.session.commit()
+
+    # routes setup
+    from routes.auth_route import auth
+
+    app.register_blueprint(auth)
 
     return app
 

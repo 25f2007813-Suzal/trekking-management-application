@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>Admin Treks</title>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+  <h2 class="mb-4">Admin Dashboard</h2>
+
+  <div class="card">
+
+    
+    <div class="card-header">
+      
+      <div class="d-flex justify-content-between align-items-center mb-4 mt-3">
+        <h3 class="d-inline">Trek Manager</h3>
+        <a href="" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#addTrekModal">Create new Trek</a>
+      </div>
+
+      <form action="{{ url_for('admin.manage_treks') }}" method="GET" class="d-flex mb-3">
+        <input class="form-control me-2" type="search" name="q" placeholder="Search by name or ID..." required>
+        <button class="btn btn-outline-primary" type="submit">Search</button>
+        <a href="{{ url_for('admin.manage_treks') }}" class="btn btn-outline-secondary ms-2">Clear</a>
+      </form>
+
+    </div>
+
+    <div class="card-body">
+      <table class="table table-hover mt-4">
+        <thead class="table">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Difficulty</th>
+                <th>Status</th>
+                <th>Associated Staff</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for trek in treks %}
+            <tr>
+                <td>{{ trek.id }}</td>
+                <td>{{ trek.name }}</td>
+                <td>{{ trek.location }}</td>
+                <td>{{ trek.difficulty.value }}</td>
+                <td>{{ trek.status.value }}</td>
+                {% if trek.staff_member.username %}
+                  <td>{{ trek.staff_member.username }}</td>
+                {% else %}
+                  <td>None</td>
+                {% endif %}
+                <td>
+                  <a href="{{ url_for('admin.edit_trek', id=trek.id) }}" class="btn btn-sm btn-warning">Edit</a>
+                    <a href="{{ url_for('admin.delete_trek', id=trek.id)}}" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="modal fade" id="addTrekModal" tabindex="-1">
+  <div class="modal-dialog">
+        <div class="modal-content">
+
+            <form action="{{ url_for('admin.add_trek') }}" method="POST">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Create New Trek</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <input type="text" name="name" class="form-control mb-2" placeholder="Trek Name" required>
+                    <input type="text" name="location" class="form-control mb-2" placeholder="Location" required>
+                    <select name="difficulty" class="form-select mb-2">
+                        <option value="EASY">Easy</option>
+                        <option value="MODERATE">Moderate</option>
+                        <option value="HARD">Hard</option>
+                    </select>
+                    <input type="number" name="duration" class="form-control mb-2" placeholder="Duration (days)" required>
+                    <input type="number" name="slots" class="form-control mb-2" placeholder="Available Slots" required>
+                    <input type="date" name="start_date" class="form-control mb-2" required>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Save Trek</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

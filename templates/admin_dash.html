@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>Admin Dashboard</title>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <h2 class="mb-4">Admin Dashboard</h2>
+
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white p-3">
+                <h5>Total Treks</h5>
+                <h3>{{ stats.treks }}</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white p-3">
+                <h5>Total Users</h5>
+                <h3>{{ stats.users }}</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-dark p-3">
+                <h5>Total Staff</h5>
+                <h3>{{ stats.staff }}</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white p-3">
+                <h5>Total Bookings</h5>
+                <h3>{{ stats.bookings }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h4>User & Staff Management</h4>
+            <form action="{{ url_for('admin.dashboard') }}" method="GET" class="d-flex mb-3">
+              <input class="form-control me-2" type="search" name="q" placeholder="Search by name or ID..." required>
+              <button class="btn btn-outline-primary" type="submit">Search</button>
+              <a href="{{ url_for('admin.dashboard') }}" class="btn btn-outline-secondary ms-2">Clear</a>
+            </form>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.role.value }}</td>
+                        <td>
+                            {% if user.is_active %}
+                                <span class="badge bg-success">Active</span>
+                            {% else %}
+                                <span class="badge bg-danger">Blacklisted</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if user.role.value == 'Staff' and not user.is_approved %}
+                                <a href="{{ url_for('admin.approve', id=user.id) }}" class="btn btn-sm btn-outline-success">Approve</a>
+                            {% endif %}
+
+                            <a href="{{ url_for('admin.toggle_status', id=user.id) }}" 
+                               class="btn btn-sm {% if user.is_active %}btn-outline-danger{% else %}btn-outline-warning{% endif %}">
+                               {{ 'Blacklist' if user.is_active else 'Activate' }}
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+

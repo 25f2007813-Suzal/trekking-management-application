@@ -76,7 +76,7 @@ def update_trek(trek_id, data):
         trek.name = data["name"]
         trek.location = data["location"]
         trek.difficulty = Difficulty[data["difficulty"]]
-        trek.available_slots = int(data["slots"])
+        trek.available_slots = max(0, int(data["slots"]))
         staff_id = data.get("staff_id")
         trek.staff_id = int(staff_id) if staff_id else None
 

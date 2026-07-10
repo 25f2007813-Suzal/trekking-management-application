@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2 class="mb-4">Staff Dashboard</h2>
+
+    <div class=card>
+      <div class="card-header mt-3 ">
+        <h4>My Assigned Treks</h4>
+
+        <form class="form d-flex mb-3 mt-3">
+          <input type="text" name="q" placeholder="Enter the Trek name" class="form-control me-3">
+          <button type="Submit" class="btn btn-primary me-3">Filter</button>
+          <a class="btn btn-primary" href="{{ url_for('staff.dashboard') }}">Clear</a>
+        </form>
+      </div>
+      
+      <div class="card-body">
+        <table class="table table-hover mt-3">
+            <thead >
+                <tr>
+                    <th>Trek Name</th>
+                    <th>Location</th>
+                    <th>Status</th>
+                    <th>Slots Left</th>
+                    <th>Registered Users</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for trek in treks %}
+                <tr>
+                    <td>{{ trek.name }}</td>
+                    <td>{{ trek.location }}</td>
+                    <td>
+                        <form action="{{ url_for('staff.update_trek', trek_id=trek.id) }}" method="POST" class="d-flex">
+                            <select name="status" class="form-select form-select-sm" style="width: 120px;">
+                                {% for status in ['OPEN', 'CLOSED', 'COMPLETED'] %}
+                                    <option value="{{ status }}" {% if trek.status.name == status %}selected{% endif %}>{{ status }}</option>
+                                {% endfor %}
+                            </select>
+                    </td>
+                    <td>
+                        <input type="number" name="slots" value="{{ trek.available_slots }}" class="form-control form-control-sm" style="width: 70px;" min="0">
+                    </td>
+                    <td>
+                        <span>{{ trek.bookings|length }}</span>
+                    </td>
+                    <td>
+                        <button type="submit" class="btn btn-sm btn-success">Update</button>
+                        </form>
+                        <a href="{{ url_for('staff.trek_participants', trek_id=trek.id) }}" class="btn btn-sm btn-info text-white">View List</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+      </div>
+    </div>
+</div>
+{% endblock %}

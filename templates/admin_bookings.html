@@ -1,28 +1,49 @@
 {% extends "base.html" %}
 {% block body %}
-<div class="container mt-4">
-    <h2>All Booking Records</h2>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Booking ID</th>
-                <th>Trekker</th>
-                <th>Trek Name</th>
-                <th>Booking Date</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for b in bookings %}
-            <tr>
-                <td>{{ b.id }}</td>
-                <td>{{ b.user.username }}</td>
-                <td>{{ b.trek.name }}</td>
-                <td>{{ b.booking_date.strftime('%Y-%m-%d') }}</td>
-                <td>{{ b.status.value }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+
+<div class="container-fluid mt-4">
+    <h2 class="mb-4">Admin Dashboard</h2>
+
+    <div class="card">
+      
+      <div class="card-header">
+        <h3>All Booking Records</h3>
+      </div>
+
+      <div class="card-body">
+        
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Booking ID</th>
+                    <th>Trekker</th>
+                    <th>Trek Name</th>
+                    <th>Booking Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+              {% if bookings %}
+                {% for b in bookings %}
+                <tr>
+                    <td>{{ b.id }}</td>
+                    <td>{{ b.user.username }}</td>
+                    <td>{{ b.trek.name }}</td>
+                    <td>{{ b.booking_date.strftime('%Y-%m-%d') }}</td>
+                    <td>{{ b.status.value }}</td>
+                </tr>
+                {% endfor %}
+
+              {% else %}
+              <tr>
+                <td colspan="5" class="text-center">No Bookings Found</td>
+              </tr>
+              {% endif %}
+            </tbody>
+        </table>
+
+      </div>
+
+    </div>
 </div>
 {% endblock %}

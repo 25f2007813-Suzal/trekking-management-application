@@ -3,7 +3,7 @@ from flask_login import login_user
 from models import db, User, Role
 
 
-def register_user(username, password, role_str):
+def register_user(username, password, role_str, name, contact_details):
     existing_user = User.query.filter(User.username == username).first()
 
     if existing_user:
@@ -16,6 +16,8 @@ def register_user(username, password, role_str):
         username=username,
         password=password,
         role=role,
+        name=name,
+        contact_details=contact_details,
         is_approved=(role == Role.TREKKER),
     )
 

@@ -44,6 +44,8 @@ class User(db.Model, UserMixin):
     username: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(String(255), nullable=False)
     role: Mapped[Role] = mapped_column(SAEnum(Role), default=Role.TREKKER)
+    name: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    contact_details: Mapped[Optional[str]] = mapped_column(String(200), nullable=True)
 
     is_approved: Mapped[bool] = mapped_column(default=False)
     is_active: Mapped[bool] = mapped_column(default=True)

@@ -39,8 +39,10 @@ def register():
         username = request.form.get("username", "").strip()
         password = request.form.get("password", "").strip()
         role = request.form.get("role")
+        name = request.form.get("name", "").strip()
+        contact_details = request.form.get("contact_details", "").strip()
 
-        if register_user(username, password, role):
+        if register_user(username, password, role, name, contact_details):
             flash("Registration successful! Please login.")
             return redirect(url_for("auth.login"))
 

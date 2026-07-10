@@ -29,6 +29,8 @@ def create_app():
                 username="admin",
                 password="admin123",
                 role=Role.ADMIN,
+                name="Admin",
+                contact_details="trekkingapp@gmail.com",
                 is_approved=True,
             )
             db.session.add(admin)
@@ -37,9 +39,11 @@ def create_app():
     # routes setup
     from routes.auth_route import auth_bp
     from routes.admin_routes import admin_bp
+    from routes.staff_routes import staff_bp
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(admin_bp)
+    app.register_blueprint(staff_bp)
 
     return app
 

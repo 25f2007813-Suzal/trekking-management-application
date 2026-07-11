@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 
-{% block content %}
+
+{% block head%}
+<title>Trek Participants</title>
+{% endblock %}
+
+{% block body %}
 <div class="container mt-4">
   <h2 class="mb-4">Staff Dashboard</h2>
   <div class="card">
@@ -10,12 +15,21 @@
     </div>
     <div class="card-body">
     <table class="table table-hover">
-        <thead><tr><th>Username</th><th>Booking Date</th></tr></thead>
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Contact Details</th>
+            <th>Booking Status</th>
+            <th>Booking Date</th>
+          </tr>
+        </thead>
         <tbody>
           {% if trek.bookings %}
             {% for booking in trek.bookings %}
             <tr>
                 <td>{{ booking.user.username }}</td>
+                <td>{{ booking.user.contact_details }}</td>
+                <td>{{ booking.status.value }}</td>
                 <td>{{ booking.booking_date.strftime('%Y-%m-%d') }}</td>
             </tr>
             {% endfor %}

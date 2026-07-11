@@ -20,8 +20,12 @@
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.view_all_bookings') }}">Bookings</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.staff_applications') }}">Staff Applications</a></li>
 
+                    {% elif current_user.role.value == 'Trekker' %}
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('user.dashboard') }}">Dashboard</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('user.my_bookings') }}">My Bookings</a></li>
+                        <li class="nav-item"> <a class="nav-link" href="{{ url_for('user.history') }}">Trekking History</a> </li>
                     {% endif %}
-
+                    <a class="nav-link" href="{{ url_for('profile.update_profile') }}">Profile</a>
                     <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
                 {% else %}
                     <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
@@ -39,8 +43,6 @@
                 {% endfor %}
             {% endif %}
         {% endwith %}
-
-        {% block content %}{% endblock %}
     </div>
 
   {% block body %}{% endblock body %}

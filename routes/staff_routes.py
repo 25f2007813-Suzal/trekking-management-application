@@ -34,6 +34,9 @@ def update_trek(trek_id):
 @staff_bp.route("/staff/trek/<int:trek_id>/participats")
 @login_required
 def trek_participants(trek_id):
+    if current_user.role != Role.STAFF:
+        abort(403)
+
     trek = Trek.query.filter(
         Trek.id == trek_id, Trek.staff_id == current_user.id
     ).first_or_404()

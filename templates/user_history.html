@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block head%}
+<title>User History</title>
+{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+  
+  <div class="card">
+   <div class="card-header">
+      <h2>My Trekking History</h2>
+    </div>
+
+    <div class="card-body">
+      <table class="table table-hover">
+          <thead>
+              <tr>
+                  <th>Trek Name</th>
+                  <th>Booking Date</th>
+                  <th>Status</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for b in bookings %}
+              <tr>
+                  <td>{{ b.trek.name }}</td>
+                  <td>{{ b.booking_date.strftime('%Y-%m-%d') }}</td>
+                  <td>
+                      <span class="badge {% if b.status.value == 'Completed' %}bg-success{% else %}bg-danger{% endif %}">
+                          {{ b.status.value }}
+                      </span>
+                  </td>
+              </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+    </div>
+
+    <div class="card-footer">
+      <a href="{{ url_for('user.dashboard') }}" class="btn btn-primary">Back to Dashboard</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

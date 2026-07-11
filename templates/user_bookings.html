@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+
+{% block head%}
+<title>User Bookings</title>
+{% endblock %}
+
+{% block body %}
+<div class="container mt-4 mb-3">
+    <h2>User Dashboard</h2>
+    <div class="card mt-3">
+      <div class="card-header mt-2">
+        <h4>My Bookings</h4>
+      </div>
+
+      <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Trek Name</th>
+                    <th>Location</th>
+                    <th>Difficulty</th>
+                    <th>Start Data</th>
+                    <th>Booking Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for b in bookings if b.status.value == 'Booked' %}
+                <tr>
+                    <td>{{ b.trek.name }}</td>
+                    <td>{{ b.trek.location }}</td>
+                    <td>{{ b.trek.difficulty.value }}</td>
+                    <td>{{ b.trek.start_date.strftime('%Y-%m-%d') }}</td>
+                    <td>{{ b.booking_date.strftime('%Y-%m-%d') }}</td>
+                    <td>{{ b.status.value }}</td>
+                    <td>
+                      {% if b.status.value == 'Booked' %}
+                      <form action="{{ url_for('user.cancel_booking', booking_id=b.id) }}" method="POST">
+                          <button type="submit" class="btn btn-sm btn-danger">Cancel</button>
+                      </form>
+                      {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+      </div>
+
+      <div class="card-footer">
+        <a href="{{ url_for('user.dashboard') }}" class="btn btn-primary">Go To Dashboard</a>
+      </div>
+    </div>
+
+</div>
+{% endblock %}

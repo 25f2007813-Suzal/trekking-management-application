@@ -89,4 +89,4 @@ def get_pending_staff():
 
 
 def get_all_bookings():
-    return Booking.query.all()
+    return Booking.query.order_by(Booking.booking_date.desc()).all()

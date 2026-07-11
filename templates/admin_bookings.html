@@ -1,33 +1,41 @@
 {% extends "base.html" %}
-{% block body %}
 
+{% block head%}
+<title>Admin Bookings</title>
+{% endblock %}
+
+{% block body %}
 <div class="container-fluid mt-4">
     <h2 class="mb-4">Admin Dashboard</h2>
 
     <div class="card">
       
-      <div class="card-header">
+      <div class="card-header mt-3">
         <h3>All Booking Records</h3>
       </div>
 
       <div class="card-body">
         
         <table class="table">
-            <thead>
-                <tr>
-                    <th>Booking ID</th>
-                    <th>Trekker</th>
-                    <th>Trek Name</th>
-                    <th>Booking Date</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
+          <thead>
+            <tr>
+              <th>Booking ID</th>
+              <th>Name</th>
+              <th>Username</th>
+              <th>Contact Details</th>
+              <th>Trek Name</th>
+              <th>Booking Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
             <tbody>
               {% if bookings %}
                 {% for b in bookings %}
                 <tr>
                     <td>{{ b.id }}</td>
+                    <td>{{ b.user.name }}</td>
                     <td>{{ b.user.username }}</td>
+                    <td>{{ b.user.contact_details }}</td>
                     <td>{{ b.trek.name }}</td>
                     <td>{{ b.booking_date.strftime('%Y-%m-%d') }}</td>
                     <td>{{ b.status.value }}</td>
@@ -42,6 +50,10 @@
             </tbody>
         </table>
 
+      </div>
+
+      <div class="card-footer">
+        <a href="{{ url_for('admin.dashboard') }}" class="btn btn-primary">Back To Dashboard</a>
       </div>
 
     </div>

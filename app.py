@@ -40,10 +40,14 @@ def create_app():
     from routes.auth_route import auth_bp
     from routes.admin_routes import admin_bp
     from routes.staff_routes import staff_bp
+    from routes.user_routes import user_bp
+    from routes.profile_routes import profile_bp
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(admin_bp)
     app.register_blueprint(staff_bp)
+    app.register_blueprint(user_bp)
+    app.register_blueprint(profile_bp)
 
     return app
 

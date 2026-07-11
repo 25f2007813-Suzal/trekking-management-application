@@ -1,0 +1,70 @@
+{% extends "base.html"%}
+
+{% block head%}
+<title>User Dashboard</title>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+  <h2>User Dashboard</h2>
+  <hr>
+  <div class="card">
+   <div class="card-header">
+    
+    <div class="d-flex justify-content-between">
+      
+      <h4>Available Treks</h4>
+
+      <form method="GET" class="form d-flex me-4">
+            <div>
+                <input type="text" name="q" class="form-control me-4" placeholder="Search trek name...">
+            </div>
+
+            <div class="me-3">
+              <select name="difficulty" class="form-select ms-3" >
+                <option value="" selected>None</option>
+                <option value="EASY">Easy</option>
+                <option value="MODERATE">Moderate</option>
+                <option value="HARD">Hard</option>
+              </select>
+            </div>
+
+            <div class="ms-3">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+
+            <div class="ms-3">
+              <a href="{{ url_for('user.dashboard')}}" class="btn btn-primary">Clear</a>
+            </div>
+      </form>
+    </div>
+   </div> 
+
+   <div class="card-body">
+    
+    <div class="row">
+        {% for trek in treks %}
+        <div class="col-md-4">
+          <div class="card mb-3">
+            <div class="card-body">
+              <h5 class="card-title">{{ trek.name }}</h5>
+              <p>
+                  Location: {{ trek.location }} | Difficulty: {{ trek.difficulty.value }}
+              </p>
+              <p>Dates: {{ trek.start_date.strftime('%Y-%m-%d') }} ({{ trek.duration }} days)</p>
+              <p>Slots Available: {{ trek.available_slots }}</p>
+
+              <form action="{{ url_for('user.book_trek', trek_id=trek.id) }}" method="POST">
+                  <button type="submit" class="btn btn-success w-100">Book Now</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+    </div>
+   </div>
+
+
+  </div>
+</div>
+{% endblock %}

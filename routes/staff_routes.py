@@ -2,7 +2,7 @@ from flask import Blueprint, flash, render_template, request, redirect, url_for,
 from flask_login import current_user, login_required
 
 from controllers.staff_controller import get_assigned_trek, update_trek_status_and_slots
-from models import Role, Trek
+from models import db, Booking, BookingStatus, Role, Trek
 
 staff_bp = Blueprint("staff", __name__)
 
@@ -42,3 +42,18 @@ def trek_participants(trek_id):
     ).first_or_404()
 
     return render_template("staff_participants.html", trek=trek)
+
+
+@staff_bp.route("/staff/cancel-participant/<int:booking_id>", methods=["POST"])
+@login_required
+def cancel_participant(booking_id):
+    if current_user.role != Role.STAFF:
+        abort(403)
+
+    booking = Booking.query.filter_by(id=booking_id).first()
+    if booking and booking.trek.staff_id == current_user.id:
+        booking.status = BookingStatus.CANCELLED
+        booking.trek.available_slots += 1
+        db.session.commit()
+        flash("Participant booking cancelled.")
+    return redirect(url_for("staff.trek_participants", trek_id=booking.trek_id))

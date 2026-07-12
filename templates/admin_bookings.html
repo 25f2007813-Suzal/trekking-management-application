@@ -26,6 +26,7 @@
               <th>Trek Name</th>
               <th>Booking Date</th>
               <th>Status</th>
+              <th>Actions</th>
             </tr>
           </thead>
             <tbody>
@@ -39,6 +40,13 @@
                     <td>{{ b.trek.name }}</td>
                     <td>{{ b.booking_date.strftime('%Y-%m-%d') }}</td>
                     <td>{{ b.status.value }}</td>
+                    <td>
+                        {% if b.status.value == 'Booked' %}
+                        <form action="{{ url_for('admin.cancel_booking', booking_id=b.id) }}" method="POST">
+                            <button type="submit" class="btn btn-sm btn-danger">Cancel Booking</button>
+                        </form>
+                        {% endif %}
+                    </td>
                 </tr>
                 {% endfor %}
 

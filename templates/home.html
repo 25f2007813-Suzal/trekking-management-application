@@ -5,3 +5,13 @@
 <title>Home</title>
 {% endblock head %}
 
+{% block body %}
+<div class="container mt-5 text-center">
+    <h1 class="display-4">Welcome to TrekManager</h1>
+    <p class="lead">Efficient systems for trek organizers, staff, and explorers.</p>
+    <div class="mt-4">
+        <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-lg">Login</a>
+        <a href="{{ url_for('auth.register') }}" class="btn btn-outline-primary btn-lg">Register</a>
+    </div>
+</div>
+{% endblock %}

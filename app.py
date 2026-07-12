@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from models import db, User, Role
 from flask_login import LoginManager
 
@@ -48,6 +48,10 @@ def create_app():
     app.register_blueprint(staff_bp)
     app.register_blueprint(user_bp)
     app.register_blueprint(profile_bp)
+
+    @app.route("/")
+    def home():
+        return render_template("home.html")
 
     return app
 

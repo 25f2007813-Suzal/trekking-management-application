@@ -11,6 +11,10 @@ def login():
     if current_user.is_authenticated:
         if current_user.role == Role.ADMIN:
             return redirect(url_for("admin.dashboard"))
+        elif current_user.role == Role.STAFF:
+            return redirect(url_for("staff.dashboard"))
+        else:
+            return redirect(url_for("user.dashboard"))
     if request.method == "POST":
         username = request.form.get("username", "").strip()
         password = request.form.get("password", "").strip()
@@ -34,6 +38,10 @@ def register():
     if current_user.is_authenticated:
         if current_user.role == Role.ADMIN:
             return redirect(url_for("admin.dashboard"))
+        elif current_user.role == Role.STAFF:
+            return redirect(url_for("staff.dashboard"))
+        else:
+            return redirect(url_for("user.dashboard"))
 
     if request.method == "POST":
         username = request.form.get("username", "").strip()

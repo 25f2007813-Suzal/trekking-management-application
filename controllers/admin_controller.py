@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from models import db, Booking, Role, Trek, User, Difficulty, TrekStatus
+from models import BookingStatus, db, Booking, Role, Trek, User, Difficulty, TrekStatus
 
 
 def get_admin_stats():
@@ -90,3 +90,13 @@ def get_pending_staff():
 
 def get_all_bookings():
     return Booking.query.order_by(Booking.booking_date.desc()).all()
+
+
+def admin_cancel_booking(booking_id):
+    booking = Booking.query.get(booking_id)
+    if booking and booking.status == BookingStatus.BOOKED:
+        booking.status = BookingStatus.CANCELLED
+        booking.trek.available_slots += 1
+        db.session.commit()
+        return True
+    return False

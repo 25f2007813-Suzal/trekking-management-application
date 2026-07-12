@@ -2,6 +2,7 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for,
 from flask_login import current_user, login_required
 
 from controllers.admin_controller import (
+    admin_cancel_booking,
     approve_staff,
     create_new_trek,
     get_admin_stats,
@@ -132,3 +133,17 @@ def view_all_bookings():
 
     bookings = get_all_bookings()
     return render_template("admin_bookings.html", bookings=bookings)
+
+
+@admin_bp.route("/admin/cancel-booking/<int:booking_id>", methods=["POST"])
+@login_required
+def cancel_booking(booking_id):
+    if current_user.role != Role.ADMIN:
+        abort(403)
+
+    if admin_cancel_booking(booking_id):
+        flash("Booking cancelled by Admin.")
+    else:
+        flash("Could not cancel booking.")
+
+    return redirect(url_for("admin.view_all_bookings"))

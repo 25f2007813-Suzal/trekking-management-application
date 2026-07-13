@@ -31,7 +31,7 @@ def update_trek(trek_id):
     return redirect(url_for("staff.dashboard"))
 
 
-@staff_bp.route("/staff/trek/<int:trek_id>/participats")
+@staff_bp.route("/staff/trek/<int:trek_id>/participants")
 @login_required
 def trek_participants(trek_id):
     if current_user.role != Role.STAFF:

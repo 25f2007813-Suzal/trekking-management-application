@@ -75,10 +75,12 @@
                                 <a href="{{ url_for('admin.approve', id=user.id) }}" class="btn btn-sm btn-outline-success">Approve</a>
                             {% endif %}
 
+                            {% if user.role.value != 'Admin' %}
                             <a href="{{ url_for('admin.toggle_status', id=user.id) }}" 
                                class="btn btn-sm {% if user.is_active %}btn-outline-danger{% else %}btn-outline-warning{% endif %}">
                                {{ 'Blacklist' if user.is_active else 'Activate' }}
                             </a>
+                            {% endif %}
                         </td>
                     </tr>
                     {% endfor %}

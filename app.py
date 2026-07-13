@@ -30,7 +30,6 @@ def create_app():
                 password="admin123",
                 role=Role.ADMIN,
                 name="Admin",
-                contact_details="trekkingapp@gmail.com",
                 is_approved=True,
             )
             db.session.add(admin)

@@ -10,6 +10,10 @@ def register_user(username, password, role_str, name, contact_details):
         flash("Username already exits. Please choose another")
         return None
 
+    if len(password) < 8 or len(password) > 15:
+        flash("Password must be between 8 and 15 characters.")
+        return None
+
     role = Role.STAFF if role_str == "Staff" else Role.TREKKER
 
     new_user = User(

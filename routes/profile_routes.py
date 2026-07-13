@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
-from models import Role, db
+from models import db
 
 profile_bp = Blueprint("profile", __name__)
 
@@ -14,6 +14,10 @@ def update_profile():
 
         new_password = request.form.get("password", "").strip()
         if new_password:
+
+            if len(new_password) < 8 or len(new_password) > 15:
+                flash("Password must be between 8 and 15 characters.")
+                return render_template("profile.html")
             current_user.password = new_password
 
         db.session.commit()
